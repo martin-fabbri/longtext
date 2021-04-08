@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CogLTX
 
 CogLTX is a framework to apply current BERT-like pretrained language models to long texts. CogLTX does not need new Transformer structures or pretraining, but want to put forward a solution in finetuning and inference. See the paper (http://keg.cs.tsinghua.edu.cn/jietang/publications/NIPS20-Ding-et-al-CogLTX.pdf) for details. 
@@ -23,3 +24,7 @@ To train CogLTX on a specific task, we need write an entry like `run_newsqa.py, 
 
 ## Others
 The data of NewsQA, hotpotQA and 20news can be found in the original dataset paper, but we do not release the codes and data about Alibaba due to commercial reasons. 
+=======
+# longtext
+Transformers based model capable to handle long token sequences (1K+).
+>>>>>>> ff0dc97eb081526278fe715805cdb8a7e9465400
