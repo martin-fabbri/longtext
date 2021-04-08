@@ -21,6 +21,7 @@ class ReasonerModule(pl.LightningModule):
 
     def __init__(self, config):
         super(ReasonerModule, self).__init__()
+        self.save_hyperparameters()
         self.config = config
         self.hparams = deepcopy(config)
 #         if hasattr(self.hparams, 'gpus'):
