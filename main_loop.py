@@ -21,6 +21,7 @@ from introspector_module import IntrospectorModule
 from reasoner_module import ReasonerModule
 from memreplay import mem_replay
 from initialize_relevance import init_relevance
+from pytorch_lightning.callbacks import ModelCheckpoint
 
 def main_loop(config):
     os.makedirs(config.tmp_dir, exist_ok=True)
@@ -40,15 +41,23 @@ def main_loop(config):
     reasoner = ReasonerModule(config)   
 
     def _create_new_trainer(epoch, logger):
+        checkpoint_callback = ModelCheckpoint(
+            monitor='val_loss',
+            dirpath=config.save_dir,
+            filename='cogltx-{epoch:02d}-{val_loss:.2f}',
+            save_top_k=3,
+            mode='min',
+        )
         return Trainer(max_epochs=epoch, 
             gpus=config.gpus, 
-            distributed_backend='ddp', 
-            weights_save_path=config.save_dir,
+            distributed_backend='ddp',
+            #weights_save_path=config.save_dir,
             logger=logger, 
-            weights_summary=None,
+            #weights_summary=None,
             #early_stop_callback=False,
             check_val_every_n_epoch=1,
-            replace_sampler_ddp=False,           
+            replace_sampler_ddp=False,
+            callbacks=[checkpoint_callback],           
         )
     min_epoch = min(find_lastest_checkpoint(os.path.join(config.save_dir, 'introspector', f'version_{config.version}', 'checkpoints'), epoch=True), find_lastest_checkpoint(os.path.join(config.save_dir, 'reasoner', f'version_{config.version}', 'checkpoints'), epoch=True)) + 1
     logging.info(f'Continue training at epoch {min_epoch}...')
