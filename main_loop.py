@@ -42,10 +42,9 @@ def main_loop(config):
 
     def _create_new_trainer(epoch, logger):
         checkpoint_callback = ModelCheckpoint(
-            monitor='val_loss',
+            # monitor='val_loss',
             dirpath=config.save_dir,
-            filename='cogltx-{epoch:02d}-{val_loss:.2f}',
-            save_top_k=3,
+            filename=f"cogltx-{epoch:02d}",
             mode='min',
         )
         return Trainer(max_epochs=epoch, 
